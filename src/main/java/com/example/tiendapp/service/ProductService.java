@@ -17,20 +17,29 @@ public class ProductService {
         return repository.findAll();
     }
 
-    public Product getProductById(int productId) {
-        return repository.findById(productId).orElse(new Product());
+    public Product getProductById(int id) {
+        return repository.findById(id).orElse(null);
     }
 
-    public void addProduct(Product product) {
-        repository.save(product);
+    public Product addProduct(Product product) {
+        return repository.save(product);
     }
 
-    public void updateProduct(Product product) {
-        repository.save(product);
+    public Product updateProduct(int id, Product product) {
+        if (repository.existsById(id)) {
+            product.setId(id);
+            return repository.save(product);
+        } else {
+            return null;
+        }
     }
 
-    public void deleteProduct(int productId) {
-        repository.deleteById(productId);
+    public boolean deleteProduct(int id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
 
